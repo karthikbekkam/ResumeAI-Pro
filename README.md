@@ -1,16 +1,15 @@
-# ResumeAI Pro
+# 🚀 ResumeAI Pro
 
 <div align="center">
 
-# 🚀 ResumeAI Pro
-### AI-Powered Resume Analysis & Career Assistant
+# AI-Powered Resume Analysis & Career Assistant
 
-Analyze resumes, calculate ATS scores, receive AI-powered feedback, match resumes with job descriptions, and prepare for interviews—all in one application.
+Analyze resumes, calculate ATS scores, receive AI-powered feedback, match resumes with job descriptions, and prepare for interviews—all in one platform.
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![Flask](https://img.shields.io/badge/Flask-3.x-black)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-ORM-red)
 ![Gemini](https://img.shields.io/badge/Google-Gemini_AI-orange)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
@@ -18,24 +17,24 @@ Analyze resumes, calculate ATS scores, receive AI-powered feedback, match resume
 
 ---
 
-# 📖 Overview
+# 📖 Project Overview
 
-ResumeAI Pro is a full-stack web application that helps job seekers improve their resumes using Artificial Intelligence.
+ResumeAI Pro is a full-stack web application that helps students and job seekers analyze and improve their resumes using Artificial Intelligence.
 
-The application accepts PDF and DOCX resumes, extracts important information, evaluates resume quality using ATS-style analysis, provides AI-powered suggestions through Google Gemini, compares resumes with job descriptions, and generates interview questions based on the uploaded resume.
+Users can upload their resumes, receive ATS-style analysis, AI-generated feedback, compare resumes with job descriptions, generate interview questions, and track their resume improvement history.
 
-The project is built with Flask and PostgreSQL using a modular architecture and is designed to demonstrate real-world software engineering practices.
+The application is built using Flask with a modular architecture and follows real-world software engineering practices.
 
 ---
 
-# ✨ Key Features
+# ✨ Features
 
-## 👤 User Authentication
+## 🔐 Authentication
 
 - User Registration
 - Secure Login
-- Password Encryption using Bcrypt
 - JWT Authentication
+- Password Hashing (Bcrypt)
 - User Profile
 - Role-Based Access
 
@@ -46,32 +45,45 @@ The project is built with Flask and PostgreSQL using a modular architecture and 
 - Upload PDF Resume
 - Upload DOCX Resume
 - Resume History
-- Resume Storage
 - Resume Parsing
 - Delete Resume
+- Resume Storage
 
 ---
 
 ## 📊 ATS Resume Analysis
 
-- ATS Score (0–100)
-- Resume Structure Analysis
-- Keyword Analysis
-- Skills Analysis
-- Resume Formatting Check
-- Readability Analysis
-- Grammar Suggestions
-- Missing Section Detection
+The system evaluates:
+
+- Resume Structure
+- Contact Information
+- Professional Summary
+- Technical Skills
+- Projects
+- Work Experience
+- Education
+- Certifications
+- Resume Formatting
+- ATS Keywords
+- Readability
+
+Provides:
+
+- ATS Score
+- Strengths
+- Weaknesses
+- Missing Skills
+- Improvement Suggestions
 
 ---
 
 ## 🤖 AI Resume Review
 
-Powered by Google Gemini AI
+Powered by Google Gemini AI.
 
 Generates:
 
-- Professional Resume Review
+- Professional Resume Feedback
 - Resume Improvement Suggestions
 - Better Professional Summary
 - Improved Project Descriptions
@@ -82,11 +94,11 @@ Generates:
 
 ## 💼 Job Matching
 
-Compare uploaded resume with a job description.
+Compare an uploaded resume with a job description.
 
 Provides:
 
-- Match Percentage
+- Job Match Percentage
 - Matched Skills
 - Missing Skills
 - Missing Keywords
@@ -98,7 +110,7 @@ Provides:
 
 Generate interview questions based on:
 
-- Skills
+- Resume Skills
 - Projects
 - Technologies
 - Experience
@@ -116,8 +128,8 @@ Includes:
 Displays:
 
 - Resume History
-- ATS Scores
-- Job Matches
+- ATS Reports
+- Job Match Reports
 - AI Analysis History
 - Charts & Analytics
 
@@ -128,8 +140,8 @@ Displays:
 - Dashboard
 - User Management
 - Resume Management
-- Reports
 - Analytics
+- Reports
 
 ---
 
@@ -161,7 +173,8 @@ Displays:
 
 ## Database
 
-- PostgreSQL
+- SQL Database
+- SQLAlchemy ORM
 
 ---
 
@@ -183,37 +196,40 @@ Displays:
 ```text
 ResumeAI-Pro/
 
-│── backend/
-│   ├── models/
-│   ├── routes/
-│   ├── services/
-│   ├── utils/
-│   ├── uploads/
-│   ├── app.py
-│   ├── config.py
-│   ├── extensions.py
-│   ├── requirements.txt
-│   └── .env.example
+backend/
+│
+├── models/
+├── routes/
+├── services/
+├── utils/
+├── uploads/
+├── app.py
+├── config.py
+├── extensions.py
+├── requirements.txt
+└── .env.example
 
-│── frontend/
-│   ├── static/
-│   └── templates/
+frontend/
+│
+├── static/
+└── templates/
 
-│── database/
-│   └── resumeai.sql
+database/
+│
+└── resumeai.sql
 
-│── README.md
-│── LICENSE
-│── Procfile
-│── render.yaml
-│── .gitignore
+README.md
+LICENSE
+Procfile
+render.yaml
+.gitignore
 ```
 
 ---
 
 # 🚀 Installation
 
-## 1. Clone Repository
+### Clone the Repository
 
 ```bash
 git clone https://github.com/karthikbekkam/ResumeAI-Pro.git
@@ -225,7 +241,7 @@ cd ResumeAI-Pro
 
 ---
 
-## 2. Create Virtual Environment
+### Create Virtual Environment
 
 ```bash
 python -m venv venv
@@ -237,7 +253,7 @@ Windows
 venv\Scripts\activate
 ```
 
-Linux / macOS
+Linux/macOS
 
 ```bash
 source venv/bin/activate
@@ -245,7 +261,7 @@ source venv/bin/activate
 
 ---
 
-## 3. Install Dependencies
+### Install Dependencies
 
 ```bash
 pip install -r backend/requirements.txt
@@ -253,41 +269,46 @@ pip install -r backend/requirements.txt
 
 ---
 
-## 4. Configure Environment Variables
+### Configure Environment Variables
 
 Rename
 
 ```
-.env.example
+backend/.env.example
 ```
 
 to
 
 ```
-.env
+backend/.env
 ```
 
-Update
+Update:
 
-- Database URL
-- Secret Keys
+- Secret Key
+- JWT Secret
+- Database Connection
 - Gemini API Key
 
 ---
 
-## 5. Create Database
+### Create Database
 
-Import
+Import:
 
 ```
 database/resumeai.sql
 ```
 
-into PostgreSQL.
+Update the database configuration in:
+
+```
+backend/config.py
+```
 
 ---
 
-## 6. Run Application
+### Run the Application
 
 ```bash
 cd backend
@@ -297,34 +318,10 @@ cd backend
 python app.py
 ```
 
-Server
+Open:
 
 ```
 http://localhost:5000
-```
-
----
-
-# 📸 Screenshots
-
-Add screenshots here after deployment.
-
-```
-docs/
-
-home.png
-
-login.png
-
-dashboard.png
-
-upload.png
-
-analysis.png
-
-job-match.png
-
-admin-dashboard.png
 ```
 
 ---
@@ -340,25 +337,42 @@ admin-dashboard.png
 
 ---
 
-# 📌 Future Improvements
+# 📸 Screenshots
 
-- Resume Version History
-- Resume Templates
-- AI Cover Letter Generator
-- LinkedIn Profile Analyzer
-- Resume PDF Export
-- Multi-language Support
-- Email Notifications
-- Dark Mode
+Add screenshots after deployment.
+
+Example:
+
+- Home Page
+- Login
+- Dashboard
+- Resume Upload
+- ATS Analysis
+- AI Review
+- Job Matching
+- Interview Questions
+- Admin Dashboard
 
 ---
 
 # 🌐 Deployment
 
-The project is ready for deployment on:
+This project is ready for deployment on platforms such as:
 
 - Render
 - Railway
+
+---
+
+# 🚀 Future Improvements
+
+- Resume Version History
+- AI Cover Letter Generator
+- Resume Templates
+- LinkedIn Profile Analysis
+- Email Notifications
+- Multi-language Support
+- Dark Mode
 
 ---
 
@@ -368,13 +382,11 @@ The project is ready for deployment on:
 
 Computer Science & Engineering Student
 
-GitHub
-
+**GitHub:**  
 https://github.com/karthikbekkam
 
-LinkedIn
-
-(Add your LinkedIn URL)
+**LinkedIn:**  
+(Add your LinkedIn profile URL)
 
 ---
 
@@ -398,6 +410,6 @@ If you found this project useful:
 
 <div align="center">
 
-Made with ❤️ using Flask, PostgreSQL, Bootstrap and Google Gemini AI
+Made with ❤️ using Flask, SQLAlchemy, Bootstrap, and Google Gemini AI.
 
 </div>
