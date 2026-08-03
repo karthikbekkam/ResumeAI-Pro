@@ -1,0 +1,149 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Admin Dashboard - ResumeAI Pro{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light min-vh-80">
+    <div class="container">
+        <!-- Admin Title Banner -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="badge bg-danger rounded-pill px-3 py-2 text-uppercase mb-2">System Administrator</span>
+                <h3 class="fw-bold mb-1">Platform Operations Dashboard</h3>
+                <p class="text-muted small mb-0">Monitor system analytics, manage user accounts, and audit resume processing activity.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('admin.users') }}" class="btn btn-outline-primary rounded-pill px-3">
+                    <i class="fas fa-users me-1"></i> Manage Users
+                </a>
+                <a href="{{ url_for('admin.resumes') }}" class="btn btn-outline-danger rounded-pill px-3">
+                    <i class="fas fa-file-alt me-1"></i> Manage Resumes
+                </a>
+            </div>
+        </div>
+
+        <!-- Global Platform Metrics -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-lg-3">
+                <div class="glass-card p-3 d-flex align-items-center gap-3">
+                    <div class="bg-primary text-white p-3 rounded-4 fs-4"><i class="fas fa-users"></i></div>
+                    <div>
+                        <h4 class="fw-bold mb-0">{{ stats.total_users }}</h4>
+                        <span class="text-muted small">Total Users</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="glass-card p-3 d-flex align-items-center gap-3">
+                    <div class="bg-success text-white p-3 rounded-4 fs-4"><i class="fas fa-file-invoice"></i></div>
+                    <div>
+                        <h4 class="fw-bold mb-0">{{ stats.total_resumes }}</h4>
+                        <span class="text-muted small">Total Resumes</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="glass-card p-3 d-flex align-items-center gap-3">
+                    <div class="bg-warning text-white p-3 rounded-4 fs-4"><i class="fas fa-briefcase"></i></div>
+                    <div>
+                        <h4 class="fw-bold mb-0">{{ stats.total_job_matches }}</h4>
+                        <span class="text-muted small">Job Matches Run</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="glass-card p-3 d-flex align-items-center gap-3">
+                    <div class="bg-purple text-white p-3 rounded-4 fs-4"><i class="fas fa-chart-pie"></i></div>
+                    <div>
+                        <h4 class="fw-bold mb-0">{{ stats.avg_system_ats }}%</h4>
+                        <span class="text-muted small">Avg System ATS Score</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Charts & Activity Stream -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-6">
+                <div class="glass-card p-4 h-100 text-center">
+                    <h5 class="fw-bold mb-3 text-start"><i class="fas fa-chart-pie text-primary me-2"></i> System ATS Score Distribution</h5>
+                    <div style="max-width: 320px; margin: 0 auto;">
+                        <canvas id="adminAtsPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="glass-card p-4 h-100">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-user-plus text-success me-2"></i> Recently Registered Users</h5>
+                    <ul class="list-group list-group-flush small">
+                        {% for u in recent_users %}
+                            <li class="list-group-item bg-transparent px-0 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="fw-bold text-dark d-block">{{ u.full_name }}</span>
+                                    <span class="text-muted small">{{ u.email }}</span>
+                                </div>
+                                <span class="badge {% if u.role == 'admin' %}bg-danger{% else %}bg-secondary{% endif %} rounded-pill">
+                                    {{ u.role.upper() }}
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent System Resumes -->
+        <div class="glass-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0"><i class="fas fa-file-contract text-danger me-2"></i> Recently Uploaded Platform Resumes</h5>
+                <a href="{{ url_for('admin.resumes') }}" class="small fw-bold text-primary text-decoration-none">View All Resumes</a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Filename</th>
+                            <th>User ID</th>
+                            <th>Format</th>
+                            <th>ATS Score</th>
+                            <th>Upload Date</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in recent_resumes %}
+                            <tr>
+                                <td>#{{ r.id }}</td>
+                                <td class="fw-semibold text-dark">{{ r.original_filename }}</td>
+                                <td>User #{{ r.user_id }}</td>
+                                <td><span class="badge bg-secondary-subtle text-secondary">{{ r.file_type.upper() }}</span></td>
+                                <td>
+                                    <span class="badge {% if r.ats_score >= 75 %}bg-success{% elif r.ats_score >= 50 %}bg-warning text-dark{% else %}bg-danger{% endif %} rounded-pill px-3">
+                                        {{ r.ats_score }}%
+                                    </span>
+                                </td>
+                                <td class="text-muted small">{{ r.upload_date.strftime('%b %d, %Y') }}</td>
+                                <td class="text-end">
+                                    <a href="{{ url_for('resume.detail', resume_id=r.id) }}" class="btn btn-sm btn-outline-primary" title="Inspect">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin-charts.js') }}"></script>
+{% endblock %}

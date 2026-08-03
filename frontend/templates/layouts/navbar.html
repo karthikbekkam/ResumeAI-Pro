@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top" aria-label="Main Navigation">
+    <div class="container">
+        <a class="navbar-brand text-gradient-primary d-flex align-items-center" href="{{ url_for('main.index') }}" aria-label="ResumeAI Pro Home">
+            <i class="fas fa-file-contract text-primary me-2 fs-3" aria-hidden="true"></i>
+            <span>ResumeAI <span class="text-gradient">Pro</span></span>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold">
+                <li class="nav-item"><a class="nav-link px-3" href="{{ url_for('main.index') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="{{ url_for('main.index') }}#about">About Us</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="{{ url_for('main.index') }}#features">Platform Features</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="{{ url_for('main.index') }}#how-it-works">How It Works</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="{{ url_for('main.index') }}#faq">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link px-3" href="{{ url_for('main.index') }}#contact">Contact Support</a></li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-2">
+                {% if session.get('user_id') %}
+                    {% if session.get('user_role') == 'admin' %}
+                        <a href="{{ url_for('admin.admin_dashboard') }}" class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold">
+                            <i class="fas fa-user-shield me-1" aria-hidden="true"></i> Admin Portal
+                        </a>
+                    {% endif %}
+                    <a href="{{ url_for('dashboard.user_dashboard') }}" class="btn btn-gradient-primary btn-sm rounded-pill px-3 me-2">
+                        <i class="fas fa-chart-line me-1" aria-hidden="true"></i> My Dashboard
+                    </a>
+                    <div class="dropdown">
+                        <button class="btn btn-light btn-sm rounded-circle shadow-sm dropdown-toggle p-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User Account Menu">
+                            <i class="fas fa-user-circle fs-5 text-primary" aria-hidden="true"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg rounded-3">
+                            <li class="dropdown-header fw-bold text-dark border-bottom pb-2 me-3">
+                                {{ session.get('user_name', 'User') }}
+                            </li>
+                            <li><a class="dropdown-item py-2" href="{{ url_for('auth.profile') }}"><i class="fas fa-id-badge text-primary me-2"></i> Account Profile</a></li>
+                            <li><a class="dropdown-item py-2" href="{{ url_for('resume.upload') }}"><i class="fas fa-upload text-success me-2"></i> Upload Your Resume</a></li>
+                            <li><a class="dropdown-item py-2" href="{{ url_for('job.match') }}"><i class="fas fa-briefcase text-info me-2"></i> Job Description Matcher</a></li>
+                            <li><a class="dropdown-item py-2" href="{{ url_for('interview.generator') }}"><i class="fas fa-comments text-warning me-2"></i> AI Interview Q&A</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger py-2" href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt me-2"></i> Sign Out</a></li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-sm rounded-pill px-4 fw-semibold">Sign In</a>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-gradient-primary btn-sm rounded-pill px-4">Create Account</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

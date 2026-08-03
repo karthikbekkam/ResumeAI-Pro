@@ -1,0 +1,400 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}ResumeAI Pro — Intelligent Resume Analysis & Job Matching{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="hero-pill">
+                    <i class="fas fa-sparkles text-primary me-1"></i> Enhanced with Google Gemini AI
+                </div>
+                <h1 class="display-4 fw-extrabold mb-4" style="line-height: 1.15;">
+                    Optimize Your Resume. <br>
+                    <span class="text-gradient-primary">Land Interviews Faster.</span>
+                </h1>
+                <p class="lead text-secondary mb-4 pe-lg-4" style="font-size: 1.15rem;">
+                    Over 75% of job applications are filtered out by automated screeners before a recruiter reads them. ResumeAI Pro audits your ATS score, matches job postings, and builds customized interview prep.
+                </p>
+                <div class="d-flex flex-wrap gap-3 mb-5">
+                    <a href="{{ url_for('resume.upload') }}" class="btn btn-gradient-primary btn-lg rounded-pill px-4">
+                        <i class="fas fa-arrow-up-from-bracket me-2"></i> Analyze Your Resume Free
+                    </a>
+                    <a href="#how-it-works" class="btn btn-outline-secondary btn-lg rounded-pill px-4 fw-bold">
+                        <i class="fas fa-play me-2 fs-6"></i> See How It Works
+                    </a>
+                </div>
+                <div class="d-flex align-items-center gap-4 text-muted small fw-medium">
+                    <div><i class="fas fa-lock text-success me-1"></i> Private & Confidential</div>
+                    <div><i class="fas fa-bolt text-primary me-1"></i> Instant 5-Second Scan</div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="glass-card p-4 p-md-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-primary-subtle text-primary rounded-4 p-3">
+                                <i class="fas fa-chart-pie fs-3"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bold">Live ATS Audit</h5>
+                                <span class="text-muted small">Senior Software Engineer</span>
+                            </div>
+                        </div>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 fw-bold">
+                            94% Match
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between small fw-bold mb-1">
+                            <span>Keyword Density & Technical Terms</span>
+                            <span class="text-primary">96%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-primary" style="width: 96%"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between small fw-bold mb-1">
+                            <span>Formatting & Structure Compliance</span>
+                            <span class="text-success">92%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-success" style="width: 92%"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between small fw-bold mb-1">
+                            <span>Quantified Achievements</span>
+                            <span class="text-info">90%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-info" style="width: 90%"></div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-light rounded-4 border">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="bg-primary text-white p-2 rounded-circle mt-1"><i class="fas fa-robot small"></i></div>
+                            <div>
+                                <h6 class="fw-bold mb-1 text-dark">Gemini AI Coach Insight</h6>
+                                <p class="small text-muted mb-0">
+                                    "Your technical skills section is solid. Swapping out passive descriptors with metrics like 'Engineered REST endpoints reducing latency by 35%' will significantly raise candidate ranking."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Bar -->
+<section class="py-5 bg-white border-top border-bottom">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-6 col-md-3">
+                <h2 class="display-5 fw-extrabold text-primary mb-1">{{ stats.total_resumes }}+</h2>
+                <p class="text-muted small fw-bold text-uppercase tracking-wider">Resumes Scanned</p>
+            </div>
+            <div class="col-6 col-md-3">
+                <h2 class="display-5 fw-extrabold text-success mb-1">{{ stats.avg_score }}%</h2>
+                <p class="text-muted small fw-bold text-uppercase tracking-wider">Avg ATS Optimization</p>
+            </div>
+            <div class="col-6 col-md-3">
+                <h2 class="display-5 fw-extrabold text-purple mb-1">{{ stats.match_accuracy }}</h2>
+                <p class="text-muted small fw-bold text-uppercase tracking-wider">Job Match Accuracy</p>
+            </div>
+            <div class="col-6 col-md-3">
+                <h2 class="display-5 fw-extrabold text-warning mb-1">{{ stats.total_users }}+</h2>
+                <p class="text-muted small fw-bold text-uppercase tracking-wider">Active Job Seekers</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="pe-lg-4">
+                    <span class="text-primary fw-bold text-uppercase small tracking-wider">Built for Job Seekers</span>
+                    <h2 class="display-6 fw-bold mb-4 mt-2">Stop Guessing Why You Aren't Getting Callback Responses</h2>
+                    <p class="text-secondary mb-4">
+                        Modern recruitment relies on sophisticated parsing software. ResumeAI Pro breaks down exactly what ATS software sees, where your resume falls short, and how to fix it before submitting applications.
+                    </p>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-primary-subtle text-primary p-3 rounded-circle">
+                                    <i class="fas fa-bolt fs-5"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0">PDF & DOCX Parsing</h6>
+                                    <span class="text-muted small">Extracts structured data</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-success-subtle text-success p-3 rounded-circle">
+                                    <i class="fas fa-bullseye fs-5"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0">Role Target Matching</h6>
+                                    <span class="text-muted small">Custom skill gap analysis</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="feature-card h-100">
+                            <i class="fas fa-file-shield fs-2 text-primary mb-3"></i>
+                            <h5 class="fw-bold">ATS Audit Engine</h5>
+                            <p class="text-muted small mb-0">Scans layout compliance, contact structure, and industry term density.</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="feature-card h-100">
+                            <i class="fas fa-brain fs-2 text-purple mb-3"></i>
+                            <h5 class="fw-bold">Gemini AI Critique</h5>
+                            <p class="text-muted small mb-0">Get high-impact action verbs and personalized executive summaries.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center max-w-2xl mx-auto mb-5">
+            <span class="text-primary fw-bold text-uppercase small">Full Platform Capabilities</span>
+            <h2 class="display-6 fw-bold mt-2">Everything You Need To Secure Job Offers</h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon-box">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h5 class="fw-bold">Dynamic ATS Scoring</h5>
+                    <p class="text-muted small">Calculates real sub-scores for Skills, Experience, Formatting, and Education using dynamic text parsing.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon-box bg-success-subtle text-success">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h5 class="fw-bold">Job Description Matcher</h5>
+                    <p class="text-muted small">Compare your resume against any target job posting to uncover missing technical skills and keyword gaps.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon-box bg-warning-subtle text-warning">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h5 class="fw-bold">AI Interview Q&A Prep</h5>
+                    <p class="text-muted small">Generates custom Technical, Behavioral (STAR method), and HR questions tailored to your experience.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon-box bg-info-subtle text-info">
+                        <i class="fas fa-clock-rotate-left"></i>
+                    </div>
+                    <h5 class="fw-bold">Resume History & Versions</h5>
+                    <p class="text-muted small">Track your improvement over time. Download original copies, inspect historical scores, or manage documents.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon-box bg-purple-subtle text-purple">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h5 class="fw-bold">Analytics Dashboard</h5>
+                    <p class="text-muted small">Interactive Chart.js graphs tracking ATS score growth and job fit match percentages.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon-box bg-danger-subtle text-danger">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h5 class="fw-bold">Admin Management Panel</h5>
+                    <p class="text-muted small">Dedicated admin interface for account management, resume auditing, search filters, and analytics.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section id="how-it-works" class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold text-uppercase small">Simple Workflow</span>
+            <h2 class="display-6 fw-bold mt-2">How It Works in 4 Simple Steps</h2>
+        </div>
+
+        <div class="row g-4 text-center">
+            <div class="col-md-3">
+                <div class="p-4 bg-white rounded-4 shadow-sm border h-100">
+                    <div class="bg-primary text-white rounded-circle fs-5 fw-bold mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">1</div>
+                    <h5 class="fw-bold">Upload Resume</h5>
+                    <p class="text-muted small">Upload your PDF or DOCX file. Text is extracted securely in seconds.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4 bg-white rounded-4 shadow-sm border h-100">
+                    <div class="bg-primary text-white rounded-circle fs-5 fw-bold mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">2</div>
+                    <h5 class="fw-bold">Instant ATS Audit</h5>
+                    <p class="text-muted small">Get sub-scores across Skills, Formatting, and Experience with Gemini AI insights.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4 bg-white rounded-4 shadow-sm border h-100">
+                    <div class="bg-primary text-white rounded-circle fs-5 fw-bold mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">3</div>
+                    <h5 class="fw-bold">Match Job Description</h5>
+                    <p class="text-muted small">Paste target job postings to identify exact missing keywords and fit score.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4 bg-white rounded-4 shadow-sm border h-100">
+                    <div class="bg-primary text-white rounded-circle fs-5 fw-bold mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">4</div>
+                    <h5 class="fw-bold">Ace the Interview</h5>
+                    <p class="text-muted small">Practice with tailored Technical, Behavioral, and HR questions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section id="faq" class="py-5 bg-light">
+    <div class="container max-w-3xl">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold text-uppercase small">Got Questions?</span>
+            <h2 class="display-6 fw-bold mt-2">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="accordion shadow-sm rounded-4 overflow-hidden" id="faqAccordion">
+            <div class="accordion-item border-0 border-bottom">
+                <h2 class="accordion-header">
+                    <button class="accordion-button fw-bold py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                        How does the ATS score calculation work?
+                    </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-secondary small">
+                        Our engine parses text using PyMuPDF and python-docx, evaluates section headers, measures technical keyword density, and checks contact information formatting.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item border-0 border-bottom">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-bold py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                        Which resume formats are supported?
+                    </button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-secondary small">
+                        ResumeAI Pro supports PDF (.pdf), Microsoft Word (.docx), and Legacy Word (.doc) files up to 16MB in size.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item border-0 border-bottom">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-bold py-3" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                        Is my data private and secure?
+                    </button>
+                </h2>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-secondary small">
+                        Yes. All uploaded files and parsed text are protected with user-isolated database permissions. You can permanently delete your resumes and account data at any time from your profile.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5">
+                <span class="text-primary fw-bold text-uppercase small">Get In Touch</span>
+                <h2 class="display-6 fw-bold mb-3 mt-1">We'd Love To Hear From You</h2>
+                <p class="text-muted mb-4">Have questions about enterprise plans, API access, or platform features? Send us a message.</p>
+                
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="bg-white p-3 rounded-circle shadow-sm text-primary"><i class="fas fa-envelope"></i></div>
+                    <div>
+                        <h6 class="fw-bold mb-0">Email Support</h6>
+                        <span class="text-muted small">support@resumeai.pro</span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-white p-3 rounded-circle shadow-sm text-primary"><i class="fas fa-map-marker-alt"></i></div>
+                    <div>
+                        <h6 class="fw-bold mb-0">Location</h6>
+                        <span class="text-muted small">San Francisco, CA & Global Remote</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="glass-card p-4 p-md-5">
+                    <form action="{{ url_for('main.contact') }}" method="POST">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Your Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="John Doe" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Email Address</label>
+                                <input type="email" name="email" class="form-control" placeholder="john@example.com" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Message</label>
+                                <textarea name="message" class="form-control" rows="4" placeholder="How can we help you?" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-gradient-primary btn-lg rounded-pill w-100">
+                                    <i class="fas fa-paper-plane me-2"></i> Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

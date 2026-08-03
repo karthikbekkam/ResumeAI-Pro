@@ -1,0 +1,67 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Create Your Account — ResumeAI Pro{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light min-vh-80 d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="glass-card p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <div class="bg-success-subtle text-success rounded-circle d-inline-flex p-3 mb-3">
+                            <i class="fas fa-user-plus fs-3" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="fw-bold mb-1">Create Your Account</h3>
+                        <p class="text-muted small">Join thousands of professionals optimizing their resumes with AI</p>
+                    </div>
+
+                    <form action="{{ url_for('auth.register') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="full_name_input" class="form-label">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="fas fa-user text-muted" aria-hidden="true"></i></span>
+                                <input type="text" id="full_name_input" name="full_name" class="form-control border-start-0" placeholder="e.g. Jane Doe" required autocomplete="name">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email_register_input" class="form-label">Enter your professional email address</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="fas fa-envelope text-muted" aria-hidden="true"></i></span>
+                                <input type="email" id="email_register_input" name="email" class="form-control border-start-0" placeholder="name@company.com" required autocomplete="email">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="target_role_input" class="form-label">Target Job Role (Optional)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="fas fa-briefcase text-muted" aria-hidden="true"></i></span>
+                                <input type="text" id="target_role_input" name="target_role" class="form-control border-start-0" placeholder="e.g. Senior Full Stack Engineer">
+                            </div>
+                            <div class="form-text">Used to customize your ATS analysis and interview questions.</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password_register_input" class="form-label">Create a secure password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="fas fa-key text-muted" aria-hidden="true"></i></span>
+                                <input type="password" id="password_register_input" name="password" class="form-control border-start-0" placeholder="At least 6 characters" minlength="6" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-gradient-primary btn-lg rounded-pill w-100 mb-3">
+                            <i class="fas fa-user-check me-2" aria-hidden="true"></i> Create Your Account
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-3 pt-3 border-top">
+                        <span class="text-muted small">Already have an account?</span>
+                        <a href="{{ url_for('auth.login') }}" class="fw-bold text-primary text-decoration-none ms-1">Sign In</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}User Dashboard - ResumeAI Pro{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light min-vh-80">
+    <div class="container">
+        <!-- User Greeting & Quick Actions -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+            <div>
+                <h3 class="fw-bold mb-1">Welcome back, {{ user.full_name }}! 👋</h3>
+                <p class="text-muted small mb-0">Here is your live ATS score overview and recent career platform activities.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('resume.upload') }}" class="btn btn-gradient-primary rounded-pill px-3">
+                    <i class="fas fa-upload me-1"></i> Upload Resume
+                </a>
+                <a href="{{ url_for('job.match') }}" class="btn btn-gradient-accent rounded-pill px-3">
+                    <i class="fas fa-briefcase me-1"></i> Match Job Post
+                </a>
+            </div>
+        </div>
+
+        <!-- Metric Counter Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-lg-3">
+                <div class="glass-card p-3 d-flex align-items-center gap-3">
+                    <div class="bg-primary text-white p-3 rounded-4 fs-4"><i class="fas fa-file-invoice"></i></div>
+                    <div>
+                        <h4 class="fw-bold mb-0">{{ stats.total_resumes }}</h4>
+                        <span class="text-muted small">Total Resumes</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="glass-card p-3 d-flex align-items-center gap-3">
+                    <div class="bg-success text-white p-3 rounded-4 fs-4"><i class="fas fa-chart-bar"></i></div>
+                    <div>
+                        <h4 class="fw-bold mb-0">{{ stats.avg_ats_score }}%</h4>
+                        <span class="text-muted small">Average ATS Score</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="glass-card p-3 d-flex align-items-center gap-3">
+                    <div class="bg-warning text-white p-3 rounded-4 fs-4"><i class="fas fa-bullseye"></i></div>
+                    <div>
+                        <h4 class="fw-bold mb-0">{{ stats.total_job_matches }}</h4>
+                        <span class="text-muted small">Job Comparisons</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="glass-card p-3 d-flex align-items-center gap-3">
+                    <div class="bg-purple text-white p-3 rounded-4 fs-4"><i class="fas fa-comments"></i></div>
+                    <div>
+                        <h4 class="fw-bold mb-0">{{ stats.total_interview_preps }}</h4>
+                        <span class="text-muted small">Interview Preps</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Chart.js Graphs -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-7">
+                <div class="glass-card p-4 h-100">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-chart-line text-primary me-2"></i> ATS Score Improvement Trend</h5>
+                    <canvas id="atsTrendChart" height="220"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="glass-card p-4 h-100">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-bar-chart text-success me-2"></i> Job Description Fit Scores</h5>
+                    <canvas id="jobMatchChart" height="220"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Recent Resumes Table -->
+            <div class="col-lg-8">
+                <div class="glass-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0"><i class="fas fa-history text-primary me-2"></i> Recent Resumes</h5>
+                        <a href="{{ url_for('resume.history') }}" class="small fw-bold text-primary text-decoration-none">View All</a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Filename</th>
+                                    <th>Format</th>
+                                    <th>ATS Score</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for r in resumes %}
+                                    <tr>
+                                        <td class="fw-semibold text-dark">{{ r.original_filename }}</td>
+                                        <td><span class="badge bg-secondary-subtle text-secondary">{{ r.file_type.upper() }}</span></td>
+                                        <td>
+                                            <span class="badge {% if r.ats_score >= 75 %}bg-success{% elif r.ats_score >= 50 %}bg-warning text-dark{% else %}bg-danger{% endif %} rounded-pill px-3">
+                                                {{ r.ats_score }}%
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
+                                            <a href="{{ url_for('resume.detail', resume_id=r.id) }}" class="btn btn-sm btn-outline-primary rounded-pill">
+                                                <i class="fas fa-eye"></i> View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4 text-muted">No resumes uploaded yet.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Log Feed -->
+            <div class="col-lg-4">
+                <div class="glass-card p-4">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-list-alt text-info me-2"></i> Activity Stream</h5>
+                    <ul class="list-group list-group-flush small">
+                        {% for act in recent_activities %}
+                            <li class="list-group-item bg-transparent px-0 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="fw-bold text-dark d-block">{{ act.action }}</span>
+                                    <span class="text-muted small">{{ act.description or '' }}</span>
+                                </div>
+                                <span class="text-muted small text-nowrap ms-2">{{ act.created_at.strftime('%H:%M') }}</span>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item bg-transparent px-0 text-muted">No activity logged yet.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard-charts.js') }}"></script>
+{% endblock %}

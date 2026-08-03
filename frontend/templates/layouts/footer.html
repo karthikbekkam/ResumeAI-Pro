@@ -1,0 +1,54 @@
+<footer class="footer-dark mt-auto">
+    <div class="container">
+        <div class="row g-4 pb-4">
+            <div class="col-lg-4">
+                <a class="navbar-brand text-white fw-bold fs-4 d-inline-block mb-3" href="#">
+                    <i class="fas fa-file-contract text-primary me-2"></i>ResumeAI Pro
+                </a>
+                <p class="text-muted small pe-lg-4">
+                    Next-generation AI platform empowering job seekers with real-time ATS optimization, job match alignment, and personalized interview preparation.
+                </p>
+                <div class="d-flex gap-3 mt-3">
+                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle"><i class="fab fa-github"></i></a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="col-6 col-lg-2">
+                <h6 class="text-white fw-bold mb-3">Platform</h6>
+                <ul class="list-unstyled small">
+                    <li class="mb-2"><a href="{{ url_for('resume.upload') }}">ATS Analyzer</a></li>
+                    <li class="mb-2"><a href="{{ url_for('job.match') }}">Job Matcher</a></li>
+                    <li class="mb-2"><a href="{{ url_for('interview.generator') }}">Interview Generator</a></li>
+                    <li class="mb-2"><a href="{{ url_for('dashboard.user_dashboard') }}">User Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-lg-2">
+                <h6 class="text-white fw-bold mb-3">Company</h6>
+                <ul class="list-unstyled small">
+                    <li class="mb-2"><a href="#about">About Us</a></li>
+                    <li class="mb-2"><a href="#features">Features</a></li>
+                    <li class="mb-2"><a href="#faq">FAQ</a></li>
+                    <li class="mb-2"><a href="#contact">Contact Support</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-4">
+                <h6 class="text-white fw-bold mb-3">Subscribe to Newsletter</h6>
+                <p class="text-muted small">Get the latest career advice, ATS hacks, and interview tips delivered to your inbox.</p>
+                <form action="{{ url_for('main.newsletter') }}" method="POST" class="d-flex gap-2">
+                    <input type="email" name="email" class="form-control form-control-sm bg-dark text-white border-secondary" placeholder="Enter your email" required>
+                    <button type="submit" class="btn btn-gradient-primary btn-sm rounded-pill px-3">Join</button>
+                </form>
+            </div>
+        </div>
+        <hr class="border-secondary my-4">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center small text-muted">
+            <p class="mb-0">&copy; 2026 ResumeAI Pro Inc. All rights reserved.</p>
+            <div class="d-flex gap-3">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Security</a>
+            </div>
+        </div>
+    </div>
+</footer>

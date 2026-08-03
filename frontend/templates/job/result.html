@@ -1,0 +1,114 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Job Match Result - {{ result.job_title }}{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <!-- Header -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+            <div>
+                <span class="badge bg-primary rounded-pill px-3 py-2 text-uppercase mb-2">Job Match Report</span>
+                <h3 class="fw-bold mb-1">{{ result.job_title }}</h3>
+                <span class="text-muted small">
+                    Compared against: <strong>{{ resume.original_filename if resume else 'Resume' }}</strong> | Date: {{ match.created_at.strftime('%B %d, %Y') }}
+                </span>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('job.match') }}" class="btn btn-outline-primary rounded-pill px-3">
+                    <i class="fas fa-plus me-1"></i> New Comparison
+                </a>
+                <a href="{{ url_for('interview.generator') }}" class="btn btn-gradient-primary rounded-pill px-3">
+                    <i class="fas fa-comments me-1"></i> Practice Interview Q&A
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Match Percentage Card -->
+            <div class="col-lg-4">
+                <div class="glass-card p-4 text-center h-100">
+                    <h5 class="fw-bold text-muted mb-3">Job Fit Score</h5>
+                    
+                    {% set score_class = 'score-high' if result.match_percentage >= 75 else ('score-medium' if result.match_percentage >= 50 else 'score-low') %}
+                    {% set score_deg = (result.match_percentage * 3.6)|round|int %}
+                    <div class="score-circle {{ score_class }}" style="--score-deg: {{ score_deg }}deg;">
+                        <div class="score-circle-inner">
+                            {{ result.match_percentage }}%
+                        </div>
+                    </div>
+
+                    <p class="fw-bold mb-3">
+                        {% if result.match_percentage >= 75 %}
+                            <span class="text-success"><i class="fas fa-check-circle me-1"></i> High Alignment Candidate!</span>
+                        {% elif result.match_percentage >= 50 %}
+                            <span class="text-warning"><i class="fas fa-exclamation-circle me-1"></i> Moderate Fit. Skill Gaps Found.</span>
+                        {% else %}
+                            <span class="text-danger"><i class="fas fa-times-circle me-1"></i> Low Alignment. Tailoring Needed.</span>
+                        {% endif %}
+                    </p>
+
+                    <hr class="my-4">
+
+                    <div class="text-start">
+                        <h6 class="fw-bold small text-muted text-uppercase mb-2">Job Description Snapshot</h6>
+                        <div class="p-3 bg-light rounded-3 border text-secondary small" style="max-height: 200px; overflow-y: auto;">
+                            {{ match.job_description }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills & Recommendations Breakdown -->
+            <div class="col-lg-8">
+                <!-- Matched Skills -->
+                <div class="glass-card p-4 mb-4">
+                    <h5 class="fw-bold mb-3 text-success"><i class="fas fa-check-circle me-2"></i> Matched Skills & Keywords</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for skill in result.matched_skills %}
+                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2">
+                                <i class="fas fa-check me-1"></i> {{ skill }}
+                            </span>
+                        {% else %}
+                            <span class="text-muted small">No specific tech match identified.</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Missing Skills -->
+                <div class="glass-card p-4 mb-4">
+                    <h5 class="fw-bold mb-3 text-danger"><i class="fas fa-exclamation-triangle me-2"></i> Missing Skills & Gaps</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for m_skill in result.missing_skills %}
+                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-2">
+                                <i class="fas fa-times me-1"></i> {{ m_skill }}
+                            </span>
+                        {% else %}
+                            <span class="text-muted small">Awesome! You possess all required technical skills listed in the job post.</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Gemini AI Actionable Recommendations -->
+                <div class="glass-card p-4">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <i class="fas fa-lightbulb text-warning fs-4"></i>
+                        <h5 class="fw-bold mb-0">AI Action Plan To Maximize Interview Calls</h5>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        {% for rec in result.recommendations %}
+                            <li class="list-group-item bg-transparent px-0 d-flex align-items-start gap-2">
+                                <i class="fas fa-chevron-right text-primary mt-1"></i>
+                                <span class="text-dark small">{{ rec }}</span>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item bg-transparent px-0 text-muted small">Action plan generated.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

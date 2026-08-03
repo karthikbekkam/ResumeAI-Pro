@@ -1,0 +1,63 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Interview Sessions History - ResumeAI Pro{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light min-vh-80">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold mb-1">Interview Prep History</h3>
+                <p class="text-muted small mb-0">Review generated technical, HR, and behavioral question sets.</p>
+            </div>
+            <a href="{{ url_for('interview.generator') }}" class="btn btn-gradient-primary rounded-pill px-4">
+                <i class="fas fa-plus me-1"></i> Generate New Q&A
+            </a>
+        </div>
+
+        <div class="glass-card p-4">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Target Role</th>
+                            <th>Difficulty</th>
+                            <th>Date Generated</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in preps %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('interview.questions', prep_id=p.id) }}" class="fw-bold text-dark text-decoration-none">
+                                        {{ p.target_role }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge {% if p.difficulty == 'Hard' %}bg-danger{% elif p.difficulty == 'Medium' %}bg-warning text-dark{% else %}bg-success{% endif %} rounded-pill px-3 py-1">
+                                        {{ p.difficulty }}
+                                    </span>
+                                </td>
+                                <td class="text-muted small">{{ p.created_at.strftime('%b %d, %Y') }}</td>
+                                <td class="text-end">
+                                    <a href="{{ url_for('interview.questions', prep_id=p.id) }}" class="btn btn-sm btn-outline-primary rounded-pill">
+                                        <i class="fas fa-eye"></i> View Q&A Sheet
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center py-5 text-muted">
+                                    <i class="fas fa-comments fs-1 mb-3 d-block text-secondary"></i>
+                                    No interview preparation sessions yet. <a href="{{ url_for('interview.generator') }}" class="fw-bold">Generate your first Q&A set now!</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

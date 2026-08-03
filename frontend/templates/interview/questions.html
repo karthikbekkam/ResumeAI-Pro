@@ -1,0 +1,146 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Interview Preparation - {{ prep.target_role }}{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <!-- Header -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+            <div>
+                <span class="badge {% if prep.difficulty == 'Hard' %}bg-danger{% elif prep.difficulty == 'Medium' %}bg-warning text-dark{% else %}bg-success{% endif %} rounded-pill px-3 py-2 text-uppercase mb-2">
+                    {{ prep.difficulty }} Difficulty
+                </span>
+                <h3 class="fw-bold mb-1">Interview Questions for {{ prep.target_role }}</h3>
+                <span class="text-muted small">
+                    Generated for resume: <strong>{{ resume.original_filename if resume else 'Resume' }}</strong> | Date: {{ prep.created_at.strftime('%B %d, %Y') }}
+                </span>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('interview.generator') }}" class="btn btn-outline-primary rounded-pill px-3">
+                    <i class="fas fa-redo me-1"></i> New Session
+                </a>
+                <button onclick="window.print();" class="btn btn-gradient-primary rounded-pill px-3">
+                    <i class="fas fa-print me-1"></i> Print / Save PDF
+                </button>
+            </div>
+        </div>
+
+        {% set q_data = data.questions %}
+        
+        <div class="row g-4">
+            <!-- 1. Technical Questions -->
+            <div class="col-md-6">
+                <div class="glass-card p-4 h-100">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="bg-primary text-white p-2 rounded-circle"><i class="fas fa-code"></i></div>
+                        <h5 class="fw-bold mb-0">Technical & Architecture Questions</h5>
+                    </div>
+                    
+                    <div class="accordion accordion-flush" id="techAccordion">
+                        {% for item in q_data.get('technical_questions', []) %}
+                            <div class="accordion-item bg-transparent">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed fw-semibold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#tech{{ loop.index }}">
+                                        Q{{ loop.index }}: {{ item.question }}
+                                    </button>
+                                </h2>
+                                <div id="tech{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#techAccordion">
+                                    <div class="accordion-body bg-light rounded-3 p-3 text-secondary small border">
+                                        <strong class="text-primary d-block mb-1"><i class="fas fa-lightbulb me-1"></i> Answering Tip:</strong>
+                                        {{ item.tip }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Behavioral Questions -->
+            <div class="col-md-6">
+                <div class="glass-card p-4 h-100">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="bg-success text-white p-2 rounded-circle"><i class="fas fa-users"></i></div>
+                        <h5 class="fw-bold mb-0">Behavioral & Situational Questions</h5>
+                    </div>
+
+                    <div class="accordion accordion-flush" id="behAccordion">
+                        {% for item in q_data.get('behavioral_questions', []) %}
+                            <div class="accordion-item bg-transparent">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed fw-semibold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#beh{{ loop.index }}">
+                                        Q{{ loop.index }}: {{ item.question }}
+                                    </button>
+                                </h2>
+                                <div id="beh{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#behAccordion">
+                                    <div class="accordion-body bg-light rounded-3 p-3 text-secondary small border">
+                                        <strong class="text-success d-block mb-1"><i class="fas fa-star me-1"></i> STAR Technique Tip:</strong>
+                                        {{ item.tip }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. HR & Leadership Questions -->
+            <div class="col-md-6">
+                <div class="glass-card p-4 h-100">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="bg-warning text-white p-2 rounded-circle"><i class="fas fa-user-tie"></i></div>
+                        <h5 class="fw-bold mb-0">HR & Career Goals Questions</h5>
+                    </div>
+
+                    <div class="accordion accordion-flush" id="hrAccordion">
+                        {% for item in q_data.get('hr_questions', []) %}
+                            <div class="accordion-item bg-transparent">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed fw-semibold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#hr{{ loop.index }}">
+                                        Q{{ loop.index }}: {{ item.question }}
+                                    </button>
+                                </h2>
+                                <div id="hr{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#hrAccordion">
+                                    <div class="accordion-body bg-light rounded-3 p-3 text-secondary small border">
+                                        <strong class="text-warning d-block mb-1"><i class="fas fa-bullseye me-1"></i> Guidance:</strong>
+                                        {{ item.tip }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Project Deep Dive Questions -->
+            <div class="col-md-6">
+                <div class="glass-card p-4 h-100">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="bg-info text-white p-2 rounded-circle"><i class="fas fa-project-diagram"></i></div>
+                        <h5 class="fw-bold mb-0">Resume Project Questions</h5>
+                    </div>
+
+                    <div class="accordion accordion-flush" id="projAccordion">
+                        {% for item in q_data.get('project_questions', []) %}
+                            <div class="accordion-item bg-transparent">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed fw-semibold text-dark py-3" type="button" data-bs-toggle="collapse" data-bs-target="#proj{{ loop.index }}">
+                                        Q{{ loop.index }}: {{ item.question }}
+                                    </button>
+                                </h2>
+                                <div id="proj{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#projAccordion">
+                                    <div class="accordion-body bg-light rounded-3 p-3 text-secondary small border">
+                                        <strong class="text-info d-block mb-1"><i class="fas fa-code-branch me-1"></i> Project Strategy:</strong>
+                                        {{ item.tip }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
